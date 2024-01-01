@@ -3,7 +3,7 @@ package ma.emsi.services;
 
 import ma.emsi.dao.IDao;
 import ma.emsi.entities.User;
-import ma.emsi.repositories.UtilisateurRepository;
+import ma.emsi.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.Optional;
 public class UserService implements IDao<User> {
 
 
-   private final UtilisateurRepository userRepository;
+   private final UserRepository userRepository;
 
-    public UserService(UtilisateurRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
