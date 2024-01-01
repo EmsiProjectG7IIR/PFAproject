@@ -1,6 +1,6 @@
 package ma.emsi.entities;
 
 public enum ERole {
-  ROLE_Employe,
-  ROLE_Manger,
+  ROLE_MANAGER,
+  ROLE_EMPLOYEE
 }
