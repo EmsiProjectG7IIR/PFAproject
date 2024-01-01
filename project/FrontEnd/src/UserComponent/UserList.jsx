@@ -11,41 +11,30 @@ import authHeader from '../services/auth-header';
 
 import {saveAs} from 'file-saver';
 import * as XLSX from 'xlsx';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 //import QRCode from 'qrcode.react';
 
 export default function UserList() {
 
-    const [searchQuery, setSearchQuery] = useState('');/////
-    //const [filteredUsers, setFilteredUsers] = useState([]);/////
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
-    //const [users, setUsers] = useState([]);
-    const [users, setUsers] = useState([
-        {id: 1, username: 'Imane', email: 'imane@gmail.com', role: 'manager'},
-        {id: 2, username: 'Oumaima', email: 'ouma@gmail.com', role: 'user'},
-        {id: 3, username: 'Maryem', email: 'mery@gmail.com', role: 'user'}
-        // Add more static values as needed
-    ]);
-
-    const [filteredUsers, setFilteredUsers] = useState([
-        {id: 1, username: 'John', email: 'iiii@gmail.com', role: 'jjj'},
-        {id: 2, username: 'Alice', email: 'jjjj@gmail.com', role: 'ooo'},
-        {id: 3, username: 'Bob', email: 'lllll@gmail.com', role: 'pppp'}
-        // Add more static values as needed
-    ]);
-
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        //fetchUserList();
+        fetchUserList();
     }, []);
 
 
     const fetchUserList = () => {
         axios
-            .get('/api/auth/users', {headers: authHeader()})
+            .get('http://localhost:8092/api/user/all')
             .then((response) => {
-                //  setUsers(response.data);
-                // setFilteredUsers(response.data);////////////
+                  setUsers(response.data);
+                  console.log(response.data);
+                 setFilteredUsers(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -90,6 +79,14 @@ export default function UserList() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this user?")) {
+            axios.delete(`http://localhost:8092/api/user/deleteById/${id}`)
+                .then(() => {
+                    setUsers(users.filter((item) => item.id !== id));
+            });
+        }
+    };
 
 // Function to handle page change
     const handlePageChange = (pageNumber) => {
@@ -135,6 +132,7 @@ export default function UserList() {
                                     <th scope='col'>USERNAME</th>
                                     <th scope='col'>EMAIL</th>
                                     <th scope='col'>ROLE</th>
+                                    <th scope='col'>ACTIONS</th>
 
                                 </tr>
                             </MDBTableHead>
@@ -168,22 +166,20 @@ export default function UserList() {
                                             </div>
 
                                         </td>
-                                        <p className='fw-normal mb-1'>{user.role}</p>
-
 
                                         <td>
                                             <div className='ms-3'>
-
-
+                                                <p className='fw-normal mb-1'>{user.role}</p>
                                             </div>
-
                                         </td>
-
-
                                         <td>
-
+                                            <Link to={`/EditUser/${user.id}`} style={{ marginRight: 2 }} className="btn btn-warning btn-rounded btn-sm">
+                                                <FontAwesomeIcon icon={faPen} />
+                                            </Link>
+                                            <MDBBtn color='danger' rounded size='sm' onClick={() => handleDelete(user.id)}>
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </MDBBtn>
                                         </td>
-
                                     </tr>))}
 
                             </MDBTableBody>

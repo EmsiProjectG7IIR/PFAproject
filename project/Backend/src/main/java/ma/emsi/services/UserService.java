@@ -4,44 +4,35 @@ package ma.emsi.services;
 import ma.emsi.dao.IDao;
 import ma.emsi.entities.User;
 import ma.emsi.repositories.UtilisateurRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements IDao<User> {
+public class UserService {
 
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
 
-   private final UtilisateurRepository userRepository;
-
-    public UserService(UtilisateurRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    public User save(User o) {
-        return null;
-    }
-
-    @Override
-    public void update(User o) {
-
-    }
-
-    @Override
-    public void delete(User o) {
-
-    }
-
-    @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return utilisateurRepository.findById(id);
     }
 
+    public User save(User user) {
+        return utilisateurRepository.save(user);
+    }
 
-    @Override
+    public void deleteById(Long id) {
+        utilisateurRepository.deleteById(id);
+    }
+
     public List<User> findAll() {
-        return userRepository.findAll();
+        return utilisateurRepository.findAll();
+    }
+
+    public void deleteAll() {
+        utilisateurRepository.deleteAll();
     }
 }
