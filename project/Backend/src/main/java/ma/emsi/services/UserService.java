@@ -12,13 +12,10 @@ import java.util.Optional;
 @Service
 public class UserService implements IDao<User> {
 
-
-   private final UserRepository userRepository;
-
+    private final UserRepository userRepository;
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     @Override
     public User save(User o) {
         return null;
@@ -31,14 +28,12 @@ public class UserService implements IDao<User> {
 
     @Override
     public void delete(User o) {
-
     }
 
     @Override
     public Optional<User> findById(Long id) {
         return Optional.empty();
     }
-
 
     @Override
     public List<User> findAll() {

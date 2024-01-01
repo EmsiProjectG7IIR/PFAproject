@@ -29,7 +29,6 @@ public class TestController {
  	sendMail(@RequestBody EmailDetails details)
  	{
  		String status = emailService.sendSimpleMail(details);
-
  		return status;
  	}
 
@@ -38,32 +37,26 @@ public class TestController {
     return "Public Content.";
   }
 
-  @GetMapping("/driver")
-  @PreAuthorize("hasRole('ROLE_DRIVER') or hasRole('ROLE_AGENT') or hasRole('ROLE_ADMIN')")
+  @GetMapping("/managers")
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   public String userAccess() {
     return "User Content.";
   }
-
-  @GetMapping("/agent")
-  @PreAuthorize("hasRole('ROLE_AGENT')")
-  public String moderatorAccess() {
-    return "Moderator Board.";
-  }
   
-  @GetMapping("/userss")
+  @GetMapping("/employees")
   public List<User> findAll(){
       return userService2.findAll();
   }
   
   @GetMapping("/username/{username}")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   public UserDetails findByUsername(@PathVariable String username){
       return userService.loadUserByUsername(username);
   }
   
-  @GetMapping("/admin")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @GetMapping("/manager")
+  @PreAuthorize("hasRole('ROLE_MANAGER')")
   public String adminAccess() {
-    return "Admin Board.";
+    return "Manager Board.";
   }
 }
