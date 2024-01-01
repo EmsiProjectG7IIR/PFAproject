@@ -37,9 +37,6 @@ public class DemandeService  {
 	}
 
 
-	public void update(Demande o) {
-demandeRepository.update(o);
-	}
 
 	public void delete(Demande demande) {
 		demandeRepository.delete(demande);
