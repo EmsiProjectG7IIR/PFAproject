@@ -52,7 +52,7 @@ const AddUser = () => {
         };
 
         axios
-            .post('/api/auth/signup', newUser, { headers: authHeader() })
+            .post('/api/auth/signup', newUser)
             .then((response) => {
                 navigate('/UserList');
             })
