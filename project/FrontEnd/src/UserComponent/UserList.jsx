@@ -1,18 +1,18 @@
-import {MDBBreadcrumb, MDBBreadcrumbItem, MDBContainer, MDBNavbar, MDBIcon} from 'mdb-react-ui-kit';
-import React, {useState, useEffect} from "react";
+import { MDBBreadcrumb, MDBBreadcrumbItem, MDBContainer, MDBNavbar, MDBIcon } from 'mdb-react-ui-kit';
+import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import {MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody} from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import authHeader from '../services/auth-header';
 
-import {saveAs} from 'file-saver';
+import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 //import QRCode from 'qrcode.react';
 
@@ -32,9 +32,9 @@ export default function UserList() {
         axios
             .get('http://localhost:8092/api/user/all')
             .then((response) => {
-                  setUsers(response.data);
-                  console.log(response.data);
-                 setFilteredUsers(response.data);
+                setUsers(response.data);
+                console.log(response.data);
+                setFilteredUsers(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -46,8 +46,8 @@ export default function UserList() {
         const worksheet = XLSX.utils.json_to_sheet(users);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
-        const excelBuffer = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
-        const data = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(data, 'users.xlsx');
     };
 
@@ -68,14 +68,14 @@ export default function UserList() {
     };
 
 
-// Calculate the number of items per page
+    // Calculate the number of items per page
     const itemsPerPage = 5;
 
 
-// Define the current page number (initially set to the first page)
+    // Define the current page number (initially set to the first page)
     const [currentPage, setCurrentPage] = useState(1);
 
-// Calculate the index range of the items to be displayed on the current page
+    // Calculate the index range of the items to be displayed on the current page
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
@@ -84,11 +84,11 @@ export default function UserList() {
             axios.delete(`http://localhost:8092/api/user/deleteById/${id}`)
                 .then(() => {
                     setUsers(users.filter((item) => item.id !== id));
-            });
+                });
         }
     };
 
-// Function to handle page change
+    // Function to handle page change
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -100,20 +100,20 @@ export default function UserList() {
             <div>
                 <div>
                 </div>
-                <div style={{marginTop: 15, marginLeft: 70}} className='d-flex justify-content-begin mb-3'>
+                <div style={{ marginTop: 15, marginLeft: 70 }} className='d-flex justify-content-begin mb-3'>
                     <Link to="/AddUser">
                         <MDBBtn color="success" rounded>
-                            <MDBIcon icon="plus" fas/> Add
+                            <MDBIcon icon="plus" fas /> Add
                         </MDBBtn>
 
                     </Link>
                     <MDBBtn color="info" rounded onClick={exportToExcel}>
-                        <MDBIcon icon="plus" fas/> Export Excel
+                        <MDBIcon icon="plus" fas /> Export Excel
                     </MDBBtn>
                 </div>
 
-                <div style={{marginTop: 5, marginLeft: 70, marginRight: 70}}>
-                    <h1 style={{fontSize: '2rem', marginBottom: '2rem'}}>Users List</h1>
+                <div style={{ marginTop: 5, marginLeft: 70, marginRight: 70 }}>
+                    <h1 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Users List</h1>
 
                     <div className='mb-3'>
                         <input
@@ -148,7 +148,7 @@ export default function UserList() {
                                                 <img
                                                     src='https://mdbootstrap.com/img/new/avatars/8.jpg'
                                                     alt=''
-                                                    style={{width: '45px', height: '45px'}}
+                                                    style={{ width: '45px', height: '45px' }}
                                                     className='rounded-circle'
                                                 />
                                                 <div className='ms-3'>

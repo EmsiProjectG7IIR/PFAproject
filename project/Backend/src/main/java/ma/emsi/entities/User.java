@@ -33,6 +33,7 @@ public class User {
 	@NotBlank
 	@Size(max = 120)
 	private String password;
+	private String mdp;
 	private String tel;
 
 	@ManyToOne
