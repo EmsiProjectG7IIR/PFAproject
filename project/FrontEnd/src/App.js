@@ -1,8 +1,14 @@
 import logo from "./logo.svg";
 import "./App.css";
 import UserList from "./UserComponent/UserList";
-
-import { Route, Routes } from "react-router-dom";
+import {
+  faCircle,
+  faCircleInfo,
+  faPen,
+  faTrash,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link, Route, Routes } from "react-router-dom";
 import Login from "./Register/Login";
 import SignIn from "./Register/SignIn";
 import DemandeList from "./DemandeComponent/DemandeList";
@@ -27,6 +33,8 @@ import {
 import React, { useState } from "react";
 import Sidebar from "./SideBar";
 import AddUser from "./UserComponent/AddUser";
+import DemandeDetails from "./DemandeComponent/DemandeDetails";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function App() {
   const [openBasic, setOpenBasic] = useState(false);
@@ -54,8 +62,12 @@ function App() {
                 </MDBNavbarLink>
               </MDBNavbarItem>
               <MDBNavbarItem>
-                <MDBNavbarLink href="#">Link</MDBNavbarLink>
+                <MDBNavbarLink href="/demandelist">Demande</MDBNavbarLink>
               </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href="/userlist">User</MDBNavbarLink>
+              </MDBNavbarItem>
+
 
               <MDBNavbarItem>
                 <MDBDropdown>
@@ -80,6 +92,25 @@ function App() {
                   Disabled
                 </MDBNavbarLink>
               </MDBNavbarItem>
+              <MDBNavbarItem className='ms-auto' light bgColor="light">
+                <MDBDropdown >
+                  <MDBDropdownToggle className="nav-link" >
+                    <FontAwesomeIcon size="lg" icon={faUser} style={{ color: "#ffff" }} />
+                  </MDBDropdownToggle>
+                  <MDBDropdownMenu light bgColor="light">
+                    <Link to="/login" className="dropdown-link">
+                      <MDBDropdownItem link>
+                        Login
+                      </MDBDropdownItem>
+                    </Link>
+                    <Link to="/register" className="dropdown-link">
+                      <MDBDropdownItem link>
+                        Register
+                      </MDBDropdownItem>
+                    </Link>
+                  </MDBDropdownMenu>
+                </MDBDropdown>
+              </MDBNavbarItem>
             </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
@@ -94,7 +125,9 @@ function App() {
         <Route path="/AddUser" element={<AddUser />} />
         <Route path="/demandelist" element={<DemandeList />} />
         <Route path="/addDemande" element={<AddDemande />} />
-        <Route path="/editDemande" element={<EditDemande />} />
+        <Route path="/editDemande/:id" element={<EditDemande />} />
+        <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
+
       </Routes>
     </div>
   );

@@ -12,6 +12,8 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
+import DatePicker from 'react-datepicker';
+
 
 import Select from "react-select";
 import authHeader from "../services/auth-header";
@@ -29,7 +31,7 @@ const AddDemande = () => {
     event.preventDefault();
 
     axios
-      .post(`/api/demande/save`, {
+      .post(`http://localhost:8092/api/demande/save`, {
         description: description,
         type: type,
         date: dateCreation,
@@ -39,7 +41,7 @@ const AddDemande = () => {
         },
       })
       .then((response) => {
-        navigate("/");
+        navigate("/demandelist");
       });
   };
   const handleUserChange = (selectedOption) => {
@@ -47,7 +49,7 @@ const AddDemande = () => {
     setUserId(UserId);
   };
   useEffect(() => {
-    axios.get("/api/user/all", { headers: authHeader() }).then((response) => {
+    axios.get("http://localhost:8092/api/user/all", { headers: authHeader() }).then((response) => {
       setUser(response.data);
       console.log(user);
     });
@@ -60,7 +62,7 @@ const AddDemande = () => {
           <MDBContainer fluid>
             <MDBBreadcrumb>
               <MDBBreadcrumbItem>
-                <a href="/Home">Home</a>
+                <a href="/">Home</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>
                 <a href="/AddDemande">Add Demande</a>
@@ -74,6 +76,9 @@ const AddDemande = () => {
         <h1 style={{ fontSize: "2rem", marginBottom: "2rem" }}>Add Demande</h1>
         <MDBValidation onSubmit={handleSubmit} className="row g-3">
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Description
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={description}
@@ -81,11 +86,14 @@ const AddDemande = () => {
                 onChange={(event) => setDescription(event.target.value)}
                 id="description"
                 required
-                label="Description"
+
               />
             </MDBValidationItem>
           </div>
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Type
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={type}
@@ -93,25 +101,32 @@ const AddDemande = () => {
                 onChange={(event) => setType(event.target.value)}
                 id="type"
                 required
-                label="Type"
+
               />
             </MDBValidationItem>
           </div>
-          <div className="col-md-6">
-            <MDBValidationItem feedback="" invalid>
-              <label htmlFor="date" className="form-label">
-                Date De Creation
-              </label>
-              <MDBInput
-                value={dateCreation}
-                name="etat"
-                onChange={(event) => setDateCreation(event.target.value)}
-                id="etat"
+          <div className='col-md-6'>
+            <label htmlFor="tech" className="form-label">
+              Date De Creation
+            </label>
+            <MDBValidationItem feedback='' invalid>
+
+              <DatePicker
+                selected={dateCreation}
+                name='tech'
+                onChange={date => setDateCreation(date)}
+                id='tech'
                 required
+                className='form-control'
               />
             </MDBValidationItem>
           </div>
+
+
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Status
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={etat}
@@ -119,7 +134,7 @@ const AddDemande = () => {
                 onChange={(event) => setEtat(event.target.value)}
                 id="etat"
                 required
-                label="Etat"
+
               />
             </MDBValidationItem>
           </div>
