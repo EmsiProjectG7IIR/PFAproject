@@ -1,14 +1,8 @@
-package ma.emsi.entities;
+package ma.emsi.security.springjwt.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-
-@ToString
-@Getter
-@Setter
-
 @Table(name = "roles")
 public class Role {
   @Id
@@ -19,10 +13,10 @@ public class Role {
   @Column(length = 20)
   private ERole name;
 
-
   public Role() {
 
   }
+
   public Role(ERole name) {
     this.name = name;
   }
@@ -35,17 +29,11 @@ public class Role {
     this.id = id;
   }
 
-
-
-  public void setName(ERole name) {
-    this.name = name;
-  }
-
   public ERole getName() {
     return name;
   }
 
-
-
-
+  public void setName(ERole name) {
+    this.name = name;
+  }
 }

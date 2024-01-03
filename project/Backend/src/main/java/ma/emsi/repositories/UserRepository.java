@@ -14,13 +14,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     Boolean existsByUsername(String username);
 
-    @Query("SELECT u FROM User u JOIN u.role r WHERE r.name = 'ROLE_MANAGER'")
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = 'ROLE_MANAGER'")
     List<User> findManager();
 
-    @Query("SELECT u FROM User u JOIN u.role r WHERE r.name = 'ROLE_EMPLOYEE'")
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = 'ROLE_EMPLOYEE'")
     List<User> findEmployee();
 
-    @Query("SELECT r.name FROM User u JOIN u.role r WHERE u.username=?1")
+    @Query("SELECT r.name FROM User u JOIN u.roles r WHERE u.username=?1")
     ERole findRole(String username);
 
     Boolean existsByEmail(String email);
