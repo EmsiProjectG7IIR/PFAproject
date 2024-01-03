@@ -1,4 +1,4 @@
-package ma.emsi.entities;
+package ma.emsi.security.springjwt.models;
 
 import java.util.Set;
 

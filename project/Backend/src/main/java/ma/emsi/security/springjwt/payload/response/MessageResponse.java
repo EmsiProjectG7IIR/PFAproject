@@ -1,4 +1,4 @@
-package ma.emsi.payload.response;
+package ma.emsi.security.springjwt.payload.response;
 
 public class MessageResponse {
   private String message;

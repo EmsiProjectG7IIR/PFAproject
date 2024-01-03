@@ -1,17 +1,21 @@
-package ma.emsi.controllers;
+package com.example.demo.security.springjwt.controllers;
 
+import java.util.List;
 
-import ma.emsi.entities.EmailDetails;
-import ma.emsi.entities.User;
-import ma.emsi.services.EmailServiceImpl;
-import ma.emsi.services.UserDetailsServiceImpl;
-import ma.emsi.services.UserService;
+import ma.emsi.security.springjwt.security.jwt.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import ma.emsi.security.springjwt.models.User;
+import ma.emsi.security.springjwt.security.jwt.services.UserDetailsServiceImpl;
 
 
 
@@ -22,20 +26,9 @@ public class TestController {
     private UserDetailsServiceImpl userService;
     private UserService userService2;
 
-    @Autowired
-    EmailServiceImpl emailService;
 
- 	// Sending a simple Email
-// 	@PostMapping("/sendMail")
-//
-// 	public String
-// 	sendMail(@RequestBody EmailDetails details)
-// 	{
-// 		String status
-// 			= emailService.sendSimpleMail(details);
-//
-// 		return status;
-// 	}
+
+
   @GetMapping("/all")
   public String allAccess() {
     return "Public Content.";

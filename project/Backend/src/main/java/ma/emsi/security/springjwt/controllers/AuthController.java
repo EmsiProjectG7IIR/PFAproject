@@ -1,21 +1,25 @@
-package ma.emsi.controllers;
+package ma.emsi.security.springjwt.controllers;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
-import ma.emsi.entities.ChangeRoleRequest;
-import ma.emsi.entities.ERole;
-import ma.emsi.entities.Role;
-import ma.emsi.entities.User;
-import ma.emsi.jwt.JwtUtils;
-import ma.emsi.payload.request.LoginRequest;
-import ma.emsi.payload.request.SignupRequest;
-import ma.emsi.payload.response.JwtResponse;
-import ma.emsi.payload.response.MessageResponse;
-import ma.emsi.repositories.RoleRepository;
-import ma.emsi.repositories.UserRepository;
 
 
-import ma.emsi.services.UserDetailsImpl;
+import ma.emsi.security.springjwt.models.ERole;
+import ma.emsi.security.springjwt.models.Role;
+import ma.emsi.security.springjwt.models.User;
+import ma.emsi.security.springjwt.payload.request.LoginRequest;
+import ma.emsi.security.springjwt.payload.request.SignupRequest;
+import ma.emsi.security.springjwt.payload.response.JwtResponse;
+import ma.emsi.security.springjwt.payload.response.MessageResponse;
+import ma.emsi.security.springjwt.repository.RoleRepository;
+import ma.emsi.security.springjwt.repository.UserRepository;
+import ma.emsi.security.springjwt.security.jwt.JwtUtils;
+import ma.emsi.security.springjwt.security.jwt.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,20 +29,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
- // @Autowired
+  @Autowired
   AuthenticationManager authenticationManager;
 
   @Autowired
@@ -47,10 +54,10 @@ public class AuthController {
   @Autowired
   RoleRepository roleRepository;
 
- // @Autowired
+  @Autowired
   PasswordEncoder encoder;
 
- // @Autowired
+  @Autowired
   JwtUtils jwtUtils;
   
   @GetMapping("/users")
@@ -75,55 +82,10 @@ public class AuthController {
       return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
   }
 
-  @PutMapping("/users/{username}/changeRole")
-  @PreAuthorize("hasRole('ADMIN')") // Only admin can change user roles
-  public ResponseEntity<?> changeUserRole(
-      @PathVariable String username, @Valid @RequestBody ChangeRoleRequest changeRoleRequest) {
-
-    Optional<User> optionalUser = userRepository.findByUsername(username);
-    if (optionalUser.isEmpty()) {
-      return ResponseEntity
-          .badRequest()
-          .body(new MessageResponse("Error: User not found."));
-    }
-
-    User user = optionalUser.get();
-    Set<String> strRoles = changeRoleRequest.getRoles();
-    Set<Role> roles = new HashSet<>();
-    
-
-    if (strRoles != null) {
-      strRoles.forEach(role -> {
-        switch (role) {
-          case "ROLE_ADMIN":
-            Role adminRole = roleRepository.findByName(ERole.ROLE_MANAGER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-//            break;
-//          case "ROLE_AGENT":
-//            Role modRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
-//                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//            roles.add(modRole);
-//            break;
-          default:
-            Role userRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        }
-      });
-    }
-
-    user.setRoles(roles);
-    userRepository.save(user);
-
-    return ResponseEntity.ok(new MessageResponse("User roles updated successfully!"));
-  }
-
-  
   @GetMapping("/users/mod")
   @PreAuthorize("permitAll()")
   public ResponseEntity<List<User>> findMod() {
-      List<User> users = userRepository.findEmployee();
+      List<User> users = userRepository.findMod();
       return ResponseEntity.ok(users);
   }
   
@@ -137,7 +99,7 @@ public class AuthController {
   @GetMapping("/users/user")
   @PreAuthorize("permitAll()")
   public ResponseEntity<List<User>> findUser() {
-      List<User> users = userRepository.findAll();
+      List<User> users = userRepository.findUser();
       return ResponseEntity.ok(users);
   }
   @GetMapping("/roles")
@@ -149,50 +111,10 @@ public class AuthController {
   }
   
   
-  //@PutMapping("/users/{userId}/password")
 
-//  public ResponseEntity<?> updatePassword(
-//      @PathVariable Long userId, @Valid @RequestBody com.example.demo.service.ChangePasswordRequest updatePasswordRequest) {
-//
-//    User user = userRepository.getReferenceById(userId);
-//
-//    if (!encoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
-//      throw new BadCredentialsException("Invalid old password");
-//    }
-//
-//    user.setPassword(encoder.encode(updatePasswordRequest.getNewPassword()));
-//    userRepository.save(user);
-//
-//    return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
-//  }
+
+      
   
-  
-//  @PutMapping("/users/{mail}/resetPassword")
-//
-//  public ResponseEntity<?> ResetPassword(
-//      @PathVariable String mail, @Valid @RequestBody com.example.demo.service.ChangePasswordFromMail updatePasswordRequest) {
-//
-//    User user = userRepository.findByEmail(mail);
-//    System.out.println("yyy"+ user);
-//    List<User> users=userRepository.findAll();
-//    for(User u:users) {
-//    	if(user.getEmail()==u.getEmail()) {
-//    		 user.setPassword(encoder.encode(updatePasswordRequest.getNewPassword()));
-//    		    userRepository.save(user);
-//    	}
-//    	else {
-//    		 return ResponseEntity
-//    		          .badRequest()
-//    		          .body(new MessageResponse("Error: mail does not exist!"));
-//    		    }
-//
-//    	}
-//    return ResponseEntity.ok(new MessageResponse("Password updated successfully"));
-//
-//    }
-//
-//
-//
   
   @PostMapping("/signin")
   
@@ -239,26 +161,26 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+      Role userRole = roleRepository.findByName(ERole.ROLE_DRIVER)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
         case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_MANAGER)
+          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(adminRole);
 
           break;
         case "agent":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MANAGER)
+          Role modRole = roleRepository.findByName(ERole.ROLE_AGENT)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(modRole);
 
           break;
         default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_EMPLOYEE)
+          Role userRole = roleRepository.findByName(ERole.ROLE_DRIVER)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(userRole);
         }

@@ -1,4 +1,4 @@
-package ma.emsi.payload.response;
+package ma.emsi.security.springjwt.payload.response;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package ma.emsi.services;
+package ma.emsi.security.springjwt.security.jwt.services;
 
-import ma.emsi.entities.User;
-import ma.emsi.repositories.UserRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import ma.emsi.security.springjwt.models.User;
+import ma.emsi.security.springjwt.repository.UserRepository;
 
 
 
 
 @Service
-
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
   UserRepository userRepository;

@@ -1,10 +1,8 @@
-package ma.emsi.payload.request;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+package ma.emsi.security.springjwt.payload.request;
 
 import java.util.Set;
+
+import jakarta.validation.constraints.*;
 
 public class SignupRequest {
   @NotBlank

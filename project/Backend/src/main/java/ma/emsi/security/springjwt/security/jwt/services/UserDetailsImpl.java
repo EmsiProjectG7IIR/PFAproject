@@ -1,19 +1,19 @@
-package ma.emsi.services;
-
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import ma.emsi.entities.User;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+package ma.emsi.security.springjwt.security.jwt.services;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import ma.emsi.security.springjwt.models.User;
+
+
 
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;

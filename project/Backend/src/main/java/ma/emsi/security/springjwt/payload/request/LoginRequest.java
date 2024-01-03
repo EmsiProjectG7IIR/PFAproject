@@ -1,4 +1,4 @@
-package ma.emsi.payload.request;
+package ma.emsi.security.springjwt.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 
