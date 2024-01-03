@@ -17,8 +17,8 @@ public class DemandeController {
     private  DemandeService demandeService;
 
     @PutMapping("/update")
-    public void update(@RequestBody Demande pharmacie) {
-        demandeService.update(pharmacie);
+    public void update(@RequestBody Demande demande) {
+        demandeService.update(demande);
     }
 
     @GetMapping("/all")
