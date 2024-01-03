@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class DemandeService  {
-	
+
 	@Autowired
 	private DemandeRepository demandeRepository;
 
@@ -35,8 +35,13 @@ public class DemandeService  {
 			return demandeRepository.save(demande);
 		}
 	}
+	public void update(Demande pharmacie) {
+		demandeRepository.save(pharmacie);
+	}
 
-
+	public void deleteById(int id) {
+		demandeRepository.deleteById(id);
+	}
 
 	public void delete(Demande demande) {
 		demandeRepository.delete(demande);
@@ -45,7 +50,7 @@ public class DemandeService  {
 
 
 
-	public Demande findById(long id) {
+	public Demande findById(int id) {
 		return demandeRepository.findById(id);
 	}
 

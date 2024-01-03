@@ -4,35 +4,39 @@ package ma.emsi.controllers;
 import ma.emsi.entities.Demande;
 import ma.emsi.repositories.DemandeRepository;
 import ma.emsi.services.DemandeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/demande")
 public class DemandeController {
+    @Autowired
+    private  DemandeService demandeService;
 
-    private final DemandeRepository demandeRepository;
-
-    private final DemandeService demandeService;
-
-    public DemandeController(DemandeService demandeService,DemandeRepository demandeRepository) {
-        this.demandeService = demandeService;
-        this.demandeRepository=demandeRepository;
+    @PutMapping("/update")
+    public void update(@RequestBody Demande pharmacie) {
+        demandeService.update(pharmacie);
     }
 
     @GetMapping("/all")
-    public List<Demande> chercherDemandes() {
-        return demandeRepository.findAll();
+    public List<Demande> findAll() {
+        return demandeService.findAll();
     }
 
     @GetMapping("/find/{id}")
-    public Demande chercherUnDemande(@PathVariable long id)  {
-        return this.demandeRepository.findById(id);
+    public Demande findById(@PathVariable int id)  {
+        return this.demandeService.findById(id);
+    }
+    @DeleteMapping("/id/{id}")
+    public void deleteById(@PathVariable int id) {
+        demandeService.deleteById(id);
     }
 
     @PostMapping("/save")
-    public Demande createDemande(@RequestBody Demande demande) {
+    public Demande save(@RequestBody Demande demande) {
         return demandeService.save(demande);
     }
 
