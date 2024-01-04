@@ -35,9 +35,9 @@ public class DemandeController {
         demandeService.deleteById(id);
     }
 
-    @PostMapping("/save")
+  /*  @PostMapping("/save")
     public Demande save(@RequestBody Demande demande) {
         return demandeService.save(demande);
-    }
+    }*/
 
 }

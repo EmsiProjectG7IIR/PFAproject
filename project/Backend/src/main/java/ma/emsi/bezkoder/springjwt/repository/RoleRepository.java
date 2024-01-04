@@ -1,12 +1,12 @@
-package ma.emsi.repositories;
-
-import ma.emsi.entities.ERole;
-import ma.emsi.entities.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+package ma.emsi.bezkoder.springjwt.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import ma.emsi.bezkoder.springjwt.models.ERole;
+import ma.emsi.bezkoder.springjwt.models.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {

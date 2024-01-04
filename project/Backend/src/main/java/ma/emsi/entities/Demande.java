@@ -20,8 +20,8 @@ public class Demande {
 	private String type;
 	private Date date;
 	private String status;
-	@ManyToOne
-	User utilisateur;
+	//@ManyToOne
+	//User utilisateur;
 
 
 }
