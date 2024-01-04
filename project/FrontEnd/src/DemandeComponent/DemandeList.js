@@ -124,20 +124,23 @@ export default function OffreList() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   const handleDelete = (id) => {
-    if (
-      window.confirm("Are you sure you want to delete this Demande?")
-    ) {
+    if (window.confirm("Are you sure you want to delete this requestForQuote?")) {
       axios
-        .delete("http://localhost:8092/api/demande/id", {
-          data: { id: id },
-        }, { headers: authHeader() })
+        .delete(`http://localhost:8092/api/demande/id/${id}`, {
+          headers: authHeader(),
+        })
         .then(() => {
           setOffres(offres.filter((item) => item.id !== id));
-          //setFilteredUsers(rfqs.filter((item) => item.id !== id));
+        })
+        .catch((error) => {
+          // Handle error
+          console.error(error);
         });
     }
   };
+
   return (
     <div>
       <div>
@@ -257,7 +260,7 @@ export default function OffreList() {
                         />
                         <div className="ms-3">
                           <p className="fw-bold mb-1">
-
+                            {offre.user.email}
                           </p>
                         </div>
                       </div>

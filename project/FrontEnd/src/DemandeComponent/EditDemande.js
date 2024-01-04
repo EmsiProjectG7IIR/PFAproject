@@ -15,6 +15,7 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import authHeader from "../services/auth-header";
 import { useNavigate, useParams } from "react-router-dom";
+import userService from "../services/user.service";
 
 const EditDemande = () => {
   const [description, setDescription] = useState("");
@@ -22,7 +23,10 @@ const EditDemande = () => {
   const [dateCreation, setDateCreation] = useState(new Date());
   const [etat, setEtat] = useState("");
   const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   const [userId, setUserId] = useState("");
+  // New state variable to store the initial user value
+  const [initialUser, setInitialUser] = useState([]);
 
   // Convert the date string to a Date object
   useEffect(() => {
@@ -45,7 +49,10 @@ const EditDemande = () => {
     setType(rfqData.type);
     setDateCreation(rfqData.date);
     setEtat(rfqData.status);
-    setUser(rfqData.utilisateur);
+    setUser(rfqData.user);
+    // Store the initial user value
+    setInitialUser(rfqData.user);
+    console.log("yy" + rfqData)
   };
 
   const handleSubmit = (event) => {
@@ -53,7 +60,7 @@ const EditDemande = () => {
 
     axios
       .put(
-        `http://localhost:8092/api/demande/update/${id}`,
+        'http://localhost:8092/api/demande/update',
         {
           id: id,
           description: description,
@@ -61,7 +68,7 @@ const EditDemande = () => {
           date: dateCreation,
           status: etat,
           user: {
-            id: userId,
+            id: user.id,
           },
         }
 
@@ -74,12 +81,17 @@ const EditDemande = () => {
       });
   };
   const handleUserChange = (selectedOption) => {
+
     const UserId = selectedOption.value;
     setUserId(UserId);
+
+
   };
+
   useEffect(() => {
+
     axios.get("http://localhost:8092/api/auth/users", { headers: authHeader() }).then((response) => {
-      setUser(response.data);
+      setUsers(response.data);
       console.log(user);
     });
   }, []);
@@ -164,24 +176,25 @@ const EditDemande = () => {
               />
             </MDBValidationItem>
           </div>
-          <div className="col-md-6">
-            <MDBValidationItem feedback="" invalid>
-              <label htmlFor="select3" className="form-label">
+
+
+          <div className='col-md-6'>
+            <MDBValidationItem feedback='' invalid>
+              <label htmlFor='select2' className='form-label'>
                 User
               </label>
               <Select
-                id="select3"
+                id='select2'
                 required
-                className="form-control"
+                className='form-control'
                 onChange={handleUserChange}
                 value={user && { value: user, label: user.username }}
-                options={(Array.isArray(user) ? user : []).map((kam) => ({
-                  value: kam.id,
-                  label: kam.username,
-                }))}
+                options={users.map((user) => ({ value: user, label: user.username }))}
+
               />
             </MDBValidationItem>
           </div>
+
 
           <div className="col-12">
             <MDBBtn type="submit">Edit</MDBBtn>

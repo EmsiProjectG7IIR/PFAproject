@@ -31,11 +31,14 @@ const AddDemande = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    axios.post("http://localhost:8092/api/auth/users/api/demande/save", {
+    axios.post("http://localhost:8092/api/demande/save", {
       description: description,
       type: type,
       date: dateCreation,
       status: etat,
+      user: {
+        id: userId,
+      },
 
 
     }, { headers: authHeader() }).then((response) => {
