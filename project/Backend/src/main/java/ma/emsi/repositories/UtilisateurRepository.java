@@ -1,6 +1,7 @@
 package ma.emsi.repositories;
 
-import ma.emsi.entities.User;
+
+import ma.emsi.entities.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,13 +10,13 @@ import java.util.Optional;
 
 
 @Repository
-public interface UtilisateurRepository extends JpaRepository<User, Long> {
+public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> {
 
-    Optional<User> findById(Long id);
-    User save(User user);
+    Optional<Utilisateur> findById(Long id);
+    Utilisateur save(Utilisateur user);
 
     void deleteById(Long id);
 
     @Override
-    List<User> findAll();
+    List<Utilisateur> findAll();
 }

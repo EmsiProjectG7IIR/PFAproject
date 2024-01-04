@@ -1,7 +1,8 @@
 package ma.emsi.services;
 
 import ma.emsi.dao.IDao;
-import ma.emsi.entities.User;
+
+import ma.emsi.entities.Utilisateur;
 import ma.emsi.repositories.DemandeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class DemandeService  {
 
 
 	public Demande save(Demande demande) {
-		User user = demande.getUtilisateur();
+		Utilisateur user = demande.getUtilisateur();
 		if (user == null){
 			logger.warn("User not found!!");
 			return null;

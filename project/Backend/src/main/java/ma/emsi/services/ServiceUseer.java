@@ -1,8 +1,8 @@
 package ma.emsi.services;
 
 
-import ma.emsi.dao.IDao;
-import ma.emsi.entities.User;
+
+import ma.emsi.entities.Utilisateur;
 import ma.emsi.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class ServiceUseer {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-    public Optional<User> findById(Long id) {
+    public Optional<Utilisateur> findById(Long id) {
         return utilisateurRepository.findById(id);
     }
 
-    public User save(User user) {
+    public Utilisateur save(Utilisateur user) {
         return utilisateurRepository.save(user);
     }
 
@@ -28,7 +28,7 @@ public class UserService {
         utilisateurRepository.deleteById(id);
     }
 
-    public List<User> findAll() {
+    public List<Utilisateur> findAll() {
         return utilisateurRepository.findAll();
     }
 

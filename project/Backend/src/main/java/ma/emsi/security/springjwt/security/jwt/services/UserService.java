@@ -7,7 +7,7 @@ import org.springframework.stereotype.*;
 
 
 
-import com.example.demo.security.springjwt.dao.IDAO;
+import ma.emsi.security.springjwt.dao.IDAO;
 import ma.emsi.security.springjwt.models.User;
 import ma.emsi.security.springjwt.repository.UserRepository;
 

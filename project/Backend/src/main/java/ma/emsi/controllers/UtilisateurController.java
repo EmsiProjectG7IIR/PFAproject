@@ -1,10 +1,11 @@
 package ma.emsi.controllers;
 
-import ma.emsi.services.UserService;
+import ma.emsi.entities.Utilisateur;
+import ma.emsi.services.ServiceUseer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import ma.emsi.entities.User;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +16,10 @@ import java.util.Optional;
 public class UtilisateurController {
 	
 	@Autowired
-	private UserService userService;
+	private ServiceUseer userService;
 
 	@PostMapping("/save")
-	public User save(@RequestBody User o) {
+	public Utilisateur save(@RequestBody Utilisateur o) {
 		return userService.save(o);
 	}
 
@@ -28,12 +29,12 @@ public class UtilisateurController {
 	}
 
 	@GetMapping("/findById/{id}")
-	public Optional<User> findById(@PathVariable Long id) {
+	public Optional<Utilisateur> findById(@PathVariable Long id) {
 		return userService.findById(id);
 	}
 
 	@GetMapping("/all")
-	public List<User> findAll() {
+	public List<Utilisateur> findAll() {
 		return userService.findAll();
 	}
 }

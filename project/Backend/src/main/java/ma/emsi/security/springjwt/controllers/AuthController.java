@@ -21,6 +21,7 @@ import ma.emsi.security.springjwt.repository.UserRepository;
 import ma.emsi.security.springjwt.security.jwt.JwtUtils;
 import ma.emsi.security.springjwt.security.jwt.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,7 +46,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-  @Autowired
+@Autowired
+
   AuthenticationManager authenticationManager;
 
   @Autowired

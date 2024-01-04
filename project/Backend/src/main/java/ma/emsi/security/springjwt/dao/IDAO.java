@@ -1,4 +1,4 @@
-package com.example.demo.security.springjwt.dao;
+package ma.emsi.security.springjwt.dao;
 
 import java.util.List;
 

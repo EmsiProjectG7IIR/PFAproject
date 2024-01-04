@@ -21,7 +21,7 @@ public class Demande {
 	private Date date;
 	private String status;
 	@ManyToOne
-	User utilisateur;
+	Utilisateur utilisateur;
 
 
 }
