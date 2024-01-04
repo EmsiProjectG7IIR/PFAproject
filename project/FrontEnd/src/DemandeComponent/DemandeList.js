@@ -71,7 +71,7 @@ export default function OffreList() {
 
   const fetchOffreList = () => {
     axios
-      .get("http://localhost:8092/api/demande/all")
+      .get("http://localhost:8092/api/demande/all", { headers : authHeader()})
       .then((response) => {
         setOffres(response.data);
         setFilteredOffres(response.data);
@@ -126,7 +126,7 @@ export default function OffreList() {
       axios
         .delete("/api/demande/id", {
           data: { id: id },
-        })
+        }, { headers : authHeader()})
         .then(() => {
           setOffres(offres.filter((item) => item.id !== id));
           //setFilteredUsers(rfqs.filter((item) => item.id !== id));
@@ -252,7 +252,7 @@ export default function OffreList() {
                         />
                         <div className="ms-3">
                           <p className="fw-bold mb-1">
-                            {offre.utilisateur.email}
+
                           </p>
                         </div>
                       </div>

@@ -38,7 +38,7 @@ const EditDemande = () => {
   }, []);
 
   const loadRfq = async () => {
-    const result = await axios.get(`/api/demande/id/${id}`);
+    const result = await axios.get(`/api/demande/id/${id}`, { headers : authHeader()});
     const rfqData = result.data;
 
     setDescription(rfqData.description);

@@ -30,7 +30,7 @@ export default function UserList() {
 
     const fetchUserList = () => {
         axios
-            .get('http://localhost:8092/api/user/all')
+            .get('http://localhost:8092/api/auth/users', { headers : authHeader()})
             .then((response) => {
                 setUsers(response.data);
                 console.log(response.data);
@@ -169,7 +169,7 @@ export default function UserList() {
 
                                         <td>
                                             <div className='ms-3'>
-                                                <p className='fw-normal mb-1'>{user.role}</p>
+                                                <p className='fw-normal mb-1'>{user.roles.map(role => role.name).join(", ")}</p>
                                             </div>
                                         </td>
                                         <td>
