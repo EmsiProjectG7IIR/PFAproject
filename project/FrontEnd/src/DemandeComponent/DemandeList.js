@@ -32,6 +32,7 @@ import authHeader from "../services/auth-header";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import authService from "../services/auth.service";
 
 export default function OffreList() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,22 +66,26 @@ export default function OffreList() {
     // Add more static values as needed
   ]);
 
+
+
+
+
   useEffect(() => {
-    fetchOffreList();
+    const user = authService.getCurrentUser();
+
+    if (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_USER")) {
+      axios.get(`http://localhost:8092/api/demande/all`, { headers: authHeader() })
+        .then((response) => {
+          setOffres(response.data);
+          setFilteredOffres(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error(error);
+        });
+    }
   }, []);
-
-  const fetchOffreList = () => {
-    axios
-      .get("http://localhost:8092/api/demande/all")
-      .then((response) => {
-        setOffres(response.data);
-        setFilteredOffres(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(offres);
     const workbook = XLSX.utils.book_new();
@@ -126,7 +131,7 @@ export default function OffreList() {
       axios
         .delete("http://localhost:8092/api/demande/id", {
           data: { id: id },
-        })
+        }, { headers: authHeader() })
         .then(() => {
           setOffres(offres.filter((item) => item.id !== id));
           //setFilteredUsers(rfqs.filter((item) => item.id !== id));
@@ -252,7 +257,7 @@ export default function OffreList() {
                         />
                         <div className="ms-3">
                           <p className="fw-bold mb-1">
-                            {offre.utilisateur.email}
+
                           </p>
                         </div>
                       </div>
