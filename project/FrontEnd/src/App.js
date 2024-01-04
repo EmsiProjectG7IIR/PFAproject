@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import UserList from "./UserComponent/UserList";
 import {
+  faBars,
   faCircle,
   faCircleInfo,
   faPen,
@@ -31,13 +32,19 @@ import {
   MDBNavbarToggler,
   MDBBtn,
 } from "mdb-react-ui-kit";
-import React, {Component, useState} from "react";
+import React, { Component, useState } from "react";
 import Sidebar from "./SideBar";
 import AddUser from "./UserComponent/AddUser";
 import AuthService from "./services/auth.service";
 import DemandeDetails from "./DemandeComponent/DemandeDetails";
+import UserRoute from "./ProtectedRoute/UserRoute";
+import NotFoundPage from "./ProtectedRoute/NoFoundPage";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 
 class App extends Component {
+
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,13 +60,11 @@ class App extends Component {
       currentUser: undefined,
     };
   }
-
   handleToggleSidebar = () => {
     this.setState((prevState) => ({
       showSidebar: !prevState.showSidebar
     }));
   };
-
   componentDidMount() {
     const user = AuthService.getCurrentUser();
 
@@ -82,7 +87,6 @@ class App extends Component {
       currentUser: undefined,
     });
   }
-
   toggleNavSecond = () => {
     this.setState(prevState => ({
       showNavSecond: !prevState.showNavSecond
@@ -90,148 +94,167 @@ class App extends Component {
   };
 
   render() {
+
     const { currentUser, showModeratorBoard, showAdminBoard, showUserBoard } = this.state;
     const { showNavSecond } = this.state;
     return (
-        <div>
-        <MDBNavbar expand="lg" light bgColor="light">
-          <MDBContainer fluid>
-            <MDBNavbarBrand href="#">Gestion de Demandes</MDBNavbarBrand>
+      <div>
+        <MDBNavbar expand='lg' light bgColor='#ffff'>
+          <MDBContainer fluid className="removeDot">
 
+            <MDBNavbarBrand href='/Home'>Offre</MDBNavbarBrand>
             <MDBNavbarToggler
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-                onClick={this.toggleNavSecond}
+              type='button'
+              data-target='#navbarColor02'
+              aria-controls='navbarColor02'
+              aria-expanded='false'
+              aria-label='Toggle navigation'
+              onClick={this.toggleNavSecond}
             >
-              <MDBIcon icon="bars" fas />
+              <FontAwesomeIcon icon={faBars} />
             </MDBNavbarToggler>
-
-            <MDBCollapse  show={showNavSecond}>
-              <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
-                <MDBNavbarItem>
-                  <MDBNavbarLink active aria-current="page" href="#">
+            <MDBCollapse show={showNavSecond} navbar>
+              <MDBNavbarNav className='me-auto mb-2 mb-lg-0'>
+                <MDBNavbarItem className='active'>
+                  <MDBNavbarLink aria-current='page' href='/Home'>
+                    <MDBIcon icon='camera-retro' />
                     Home
                   </MDBNavbarLink>
                 </MDBNavbarItem>
+
+
+
                 {showUserBoard && (
 
 
-                    <MDBNavbarItem>
-                      <MDBNavbarLink href="/demandelist">Demande</MDBNavbarLink>
-                    </MDBNavbarItem> )}
-                {showUserBoard && (
                   <MDBNavbarItem>
-                  <MDBNavbarLink href="/userlist">User</MDBNavbarLink>
-                  </MDBNavbarItem>)}
+                    <MDBNavbarLink href='/demandelist'>Demande List</MDBNavbarLink>
+                  </MDBNavbarItem>
 
 
-
-
-
-
-                <MDBNavbarItem>
-                  <MDBDropdown>
-                    <MDBDropdownToggle tag="a" className="nav-link" role="button">
-                      Dropdown
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu>
-                      <MDBDropdownItem link>Action</MDBDropdownItem>
-                      <MDBDropdownItem link>Another action</MDBDropdownItem>
-                      <MDBDropdownItem link>Something else here</MDBDropdownItem>
-                    </MDBDropdownMenu>
-                  </MDBDropdown>
-                </MDBNavbarItem>
-                {currentUser ? (
-                    <MDBNavbarItem className='ms-auto'>
-                      <MDBDropdown>
-                        <MDBDropdownToggle className="nav-link">
-                          <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu>
-                          <Link to="/profile" className="dropdown-link">
-                            <MDBDropdownItem link>
-                              {currentUser.username}
-                            </MDBDropdownItem>
-                          </Link>
-                          <Link to="/login" className="dropdown-link">
-                            <MDBDropdownItem link onClick={this.logOut}>
-                              Log out
-                            </MDBDropdownItem>
-                          </Link>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    </MDBNavbarItem>
-                ) : (
-                    <MDBNavbarItem className='ms-auto'>
-                      <MDBDropdown >
-                        <MDBDropdownToggle className="nav-link" >
-                          <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu>
-                          <Link to="/login" className="dropdown-link">
-                            <MDBDropdownItem link>
-                              Login
-                            </MDBDropdownItem>
-                          </Link>
-                          <Link to="/register" className="dropdown-link">
-                            <MDBDropdownItem link>
-                              Register
-                            </MDBDropdownItem>
-                          </Link>
-                        </MDBDropdownMenu>
-                      </MDBDropdown>
-                    </MDBNavbarItem>
                 )}
-                <MDBNavbarItem>
-                  <MDBNavbarLink
-                      disabled
-                      href="#"
-                      tabIndex={-1}
-                      aria-disabled="true"
-                  >
-                    Disabled
-                  </MDBNavbarLink>
-                </MDBNavbarItem>
-                <MDBNavbarItem className='ms-auto' light bgColor="light">
-                  <MDBDropdown >
-                    <MDBDropdownToggle className="nav-link" >
-                      <FontAwesomeIcon size="lg" icon={faUser} style={{ color: "#ffff" }} />
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu light bgColor="light">
-                      <Link to="/login" className="dropdown-link">
-                        <MDBDropdownItem link>
-                          Login
-                        </MDBDropdownItem>
-                      </Link>
-                      <Link to="/register" className="dropdown-link">
-                        <MDBDropdownItem link>
-                          Register
-                        </MDBDropdownItem>
-                      </Link>
-                    </MDBDropdownMenu>
-                  </MDBDropdown>
-                </MDBNavbarItem>
+
+                {showUserBoard && (
+
+
+                  <MDBNavbarItem>
+                    <MDBNavbarLink href='/user'>User</MDBNavbarLink>
+                  </MDBNavbarItem>
+
+
+                )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {currentUser ? (
+                  <MDBNavbarItem className='ms-auto'>
+                    <MDBDropdown>
+                      <MDBDropdownToggle className="nav-link">
+                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu>
+                        <Link to="/profile" className="dropdown-link">
+                          <MDBDropdownItem link>
+                            {currentUser.username}
+                          </MDBDropdownItem>
+                        </Link>
+                        <Link to="/login" className="dropdown-link">
+                          <MDBDropdownItem link onClick={this.logOut}>
+                            Log out
+                          </MDBDropdownItem>
+                        </Link>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavbarItem>
+                ) : (
+                  <MDBNavbarItem className='ms-auto'>
+                    <MDBDropdown >
+                      <MDBDropdownToggle className="nav-link" >
+                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
+                      </MDBDropdownToggle>
+                      <MDBDropdownMenu>
+                        <Link to="/login" className="dropdown-link">
+                          <MDBDropdownItem link>
+                            Login
+                          </MDBDropdownItem>
+                        </Link>
+                        <Link to="/register" className="dropdown-link">
+                          <MDBDropdownItem link>
+                            Register
+                          </MDBDropdownItem>
+                        </Link>
+                      </MDBDropdownMenu>
+                    </MDBDropdown>
+                  </MDBNavbarItem>
+                )}
+
+
+
               </MDBNavbarNav>
+
+
+
+
+
             </MDBCollapse>
+
+
+
           </MDBContainer>
         </MDBNavbar>
-<div>
-    <Routes>
-      {/* Add the following lines for SignIn and SignUp routes */}
 
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<SignIn />} />
-      <Route path="/user" element={<UserList />} />
-      <Route path="/AddUser" element={<AddUser />} />
-      <Route path="/demandelist" element={<DemandeList />} />
-      <Route path="/addDemande" element={<AddDemande />} />
-      <Route path="/editDemande/:id" element={<EditDemande />} />
-      <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
 
-    </Routes>
-</div>
+
+
+        <div>
+          <Routes>
+            {/* Add the following lines for SignIn and SignUp routes */}
+            <Route path="/" element={<Login />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<SignIn />} />
+
+
+
+            <Route path="/NotFoundPage" element={<NotFoundPage />} />
+
+
+            <Route element={<ProtectedRoute />} >
+
+              <Route element={<UserRoute />} >
+                <Route path="/user" element={<UserList />} />
+                <Route path="/AddUser" element={<AddUser />} />
+                <Route path="/demandelist" element={<DemandeList />} />
+                <Route path="/addDemande" element={<AddDemande />} />
+                <Route path="/editDemande/:id" element={<EditDemande />} />
+                <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
+              </Route>
+            </Route>
+          </Routes>
         </div>
+      </div>
     );
   }
 }

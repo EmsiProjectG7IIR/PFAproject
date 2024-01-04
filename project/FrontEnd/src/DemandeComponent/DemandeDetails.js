@@ -49,8 +49,9 @@ const DemandeDetails = () => {
         setDateCreation(rfqData.date);
         setEtat(rfqData.status);
         setUser(rfqData.user);
-       // console.log("wikwik " + rfqData.utilisateur.username);
+        // console.log("wikwik " + rfqData.utilisateur.username);
     };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -69,7 +70,7 @@ const DemandeDetails = () => {
                     },
                 }
 
-           ,{ headers: authHeader()} )
+                , { headers: authHeader() })
             .then(() => {
                 navigate("/demandelist");
             })
@@ -82,7 +83,7 @@ const DemandeDetails = () => {
         setUserId(UserId);
     };
     useEffect(() => {
-        axios.get("http://localhost:8092/api/auth/users",{ headers: authHeader()}).then((response) => {
+        axios.get("http://localhost:8092/api/auth/users", { headers: authHeader() }).then((response) => {
             setUser(response.data);
             console.log(user);
         });

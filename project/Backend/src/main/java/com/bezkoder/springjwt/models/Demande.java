@@ -21,6 +21,7 @@ public class Demande {
 	private String status;
 	@ManyToOne
 	User user;
+	
 
 
 }

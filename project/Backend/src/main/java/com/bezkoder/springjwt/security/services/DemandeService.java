@@ -1,14 +1,16 @@
 package com.bezkoder.springjwt.security.services;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
 import com.bezkoder.springjwt.models.Demande;
 import com.bezkoder.springjwt.models.User;
 import com.bezkoder.springjwt.repository.DemandeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class DemandeService  {
 
 
 	public Demande save(Demande demande) {
+
 		User user = demande.getUser();
 		if (user == null){
 			logger.warn("User not found!!");

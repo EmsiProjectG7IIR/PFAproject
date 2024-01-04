@@ -27,28 +27,32 @@ const AddDemande = () => {
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    axios
-      .post(`http://localhost:8092/api/demande/save`, {
-        description: description,
-        type: type,
-        date: dateCreation,
-        status: etat,
-        utilisateur: {
-          id: userId,
-        },
-      },{ headers: authHeader()})
-      .then((response) => {
-        navigate("/demandelist");
-      });
+    axios.post("http://localhost:8092/api/auth/users/api/demande/save", {
+      description: description,
+      type: type,
+      date: dateCreation,
+      status: etat,
+
+
+    }, { headers: authHeader() }).then((response) => {
+
+      navigate("/demandelist");
+    });
   };
   const handleUserChange = (selectedOption) => {
+
     const UserId = selectedOption.value;
     setUserId(UserId);
+
   };
+
+
   useEffect(() => {
+
     axios.get("http://localhost:8092/api/auth/users", { headers: authHeader() }).then((response) => {
       setUser(response.data);
       console.log(user);
@@ -148,9 +152,9 @@ const AddDemande = () => {
                 required
                 className="form-control"
                 onChange={handleUserChange}
-                options={user.map((kam) => ({
-                  value: kam.id,
-                  label: kam.username,
+                options={user.map((u) => ({
+                  value: u.id,
+                  label: u.username,
                 }))}
               />
             </MDBValidationItem>

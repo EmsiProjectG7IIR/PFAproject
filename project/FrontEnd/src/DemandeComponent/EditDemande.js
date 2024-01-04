@@ -46,7 +46,6 @@ const EditDemande = () => {
     setDateCreation(rfqData.date);
     setEtat(rfqData.status);
     setUser(rfqData.utilisateur);
-
   };
 
   const handleSubmit = (event) => {
@@ -66,7 +65,7 @@ const EditDemande = () => {
           },
         }
 
-      ,{ headers: authHeader()})
+        , { headers: authHeader() })
       .then(() => {
         navigate("/demandelist");
       })
@@ -79,7 +78,7 @@ const EditDemande = () => {
     setUserId(UserId);
   };
   useEffect(() => {
-    axios.get("http://localhost:8092/api/auth/users",{ headers: authHeader()}).then((response) => {
+    axios.get("http://localhost:8092/api/auth/users", { headers: authHeader() }).then((response) => {
       setUser(response.data);
       console.log(user);
     });
