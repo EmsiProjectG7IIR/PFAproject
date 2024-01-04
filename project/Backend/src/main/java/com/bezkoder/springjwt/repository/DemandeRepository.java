@@ -1,4 +1,4 @@
-package com.bezkoder.springjwt.repositories;
+package com.bezkoder.springjwt.repository;
 
 
 import com.bezkoder.springjwt.models.Demande;
