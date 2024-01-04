@@ -35,6 +35,7 @@ import React, {Component, useState} from "react";
 import Sidebar from "./SideBar";
 import AddUser from "./UserComponent/AddUser";
 import AuthService from "./services/auth.service";
+import DemandeDetails from "./DemandeComponent/DemandeDetails";
 
 class App extends Component {
   constructor(props) {
@@ -226,6 +227,7 @@ class App extends Component {
       <Route path="/demandelist" element={<DemandeList />} />
       <Route path="/addDemande" element={<AddDemande />} />
       <Route path="/editDemande/:id" element={<EditDemande />} />
+      <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
 
     </Routes>
 </div>
