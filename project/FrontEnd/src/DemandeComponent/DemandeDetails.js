@@ -36,6 +36,9 @@ const DemandeDetails = () => {
     useEffect(() => {
         loadRfq();
     }, []);
+    useEffect(() => {
+
+    }, []);
 
     const loadRfq = async () => {
         const result = await axios.get(`http://localhost:8092/api/demande/find/${id}`);
