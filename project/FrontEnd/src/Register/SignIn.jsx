@@ -6,6 +6,8 @@ import Form from "react-validation/build/form";
 
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+import AuthService from "../services/auth.service";
+
 
 
 const required = value => {
@@ -94,7 +96,7 @@ export default class SignIn extends Component {
         this.form.validateAll();
 
         if (this.checkBtn.context._errors.length === 0) {
-            /*  AuthService.register(
+              AuthService.register(
                   this.state.username,
                   this.state.email,
                   this.state.password
@@ -118,7 +120,7 @@ export default class SignIn extends Component {
                           message: resMessage
                       });
                   }
-              );*/
+              );
         }
     }
 

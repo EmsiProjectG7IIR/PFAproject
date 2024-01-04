@@ -13,9 +13,10 @@ import {
 import { Component } from 'react';
 import CheckButton from "react-validation/build/button";
 
-
+import authHeader from "../services/auth-header";
 import Form from "react-validation/build/form";
 import { withRouter } from '../common/with-router';
+import authService from "../services/auth.service";
 const required = (value) => {
   if (!value) {
     return (
@@ -63,9 +64,9 @@ class Login extends Component {
     this.form.validateAll();
 
     if (this.checkBtn.context._errors.length === 0) {
-      /* authService.login(this.state.username, this.state.password).then(
+       authService.login(this.state.username, this.state.password).then(
          () => {
-           this.props.router.navigate("/profile");
+           this.props.router.navigate("/user");
            window.location.reload();
          },
          (error) => {
@@ -81,7 +82,7 @@ class Login extends Component {
              message: resMessage
            });
          }
-       );*/
+       );
     } else {
       this.setState({
         loading: false

@@ -38,14 +38,15 @@ const EditDemande = () => {
   }, []);
 
   const loadRfq = async () => {
-    const result = await axios.get(`/api/demande/id/${id}`);
+    const result = await axios.get(`http://localhost:8092/api/demande/find/${id}`);
     const rfqData = result.data;
 
     setDescription(rfqData.description);
     setType(rfqData.type);
     setDateCreation(rfqData.date);
     setEtat(rfqData.status);
-    setUser(result.data.utilisateur);
+    setUser(rfqData.utilisateur);
+
   };
 
   const handleSubmit = (event) => {
@@ -53,26 +54,36 @@ const EditDemande = () => {
 
     axios
       .put(
-        `/api/demande/update/${id}`,
+        `http://localhost:8092/api/demande/update/${id}`,
         {
           id: id,
           description: description,
           type: type,
           date: dateCreation,
           status: etat,
-          utilisateur: {
+          user: {
             id: userId,
           },
-        },
-        { headers: authHeader() }
-      )
+        }
+
+      ,{ headers: authHeader()})
       .then(() => {
-        navigate("/RequestForQuote");
+        navigate("/demandelist");
       })
       .catch((error) => {
         console.error("Error updating RFQ:", error);
       });
   };
+  const handleUserChange = (selectedOption) => {
+    const UserId = selectedOption.value;
+    setUserId(UserId);
+  };
+  useEffect(() => {
+    axios.get("http://localhost:8092/api/auth/users",{ headers: authHeader()}).then((response) => {
+      setUser(response.data);
+      console.log(user);
+    });
+  }, []);
 
   return (
     <div>
@@ -81,7 +92,7 @@ const EditDemande = () => {
           <MDBContainer fluid>
             <MDBBreadcrumb>
               <MDBBreadcrumbItem>
-                <a href="/Home">Home</a>
+                <a href="/">Home</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>
                 <a href="/EditDemande">Edit Demande</a>
@@ -95,6 +106,9 @@ const EditDemande = () => {
         <h1 style={{ fontSize: "2rem", marginBottom: "2rem" }}>Edit Demande</h1>
         <MDBValidation onSubmit={handleSubmit} className="row g-3" isValidated>
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Description
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={description}
@@ -102,11 +116,14 @@ const EditDemande = () => {
                 onChange={(event) => setDescription(event.target.value)}
                 id="description"
                 required
-                label="Description"
+
               />
             </MDBValidationItem>
           </div>
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Type
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={type}
@@ -114,15 +131,14 @@ const EditDemande = () => {
                 onChange={(event) => setType(event.target.value)}
                 id="type"
                 required
-                label="Type"
               />
             </MDBValidationItem>
           </div>
           <div className="col-md-6">
+            <label htmlFor="date" className="form-label">
+              Date De Creation
+            </label>
             <MDBValidationItem feedback="" invalid>
-              <label htmlFor="date" className="form-label">
-                Date De Creation
-              </label>
               <DatePicker
                 selected={dateCreation}
                 name="fin"
@@ -133,7 +149,11 @@ const EditDemande = () => {
               />
             </MDBValidationItem>
           </div>
+
           <div className="col-md-6">
+            <label htmlFor="tech" className="form-label">
+              Status
+            </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
                 value={etat}
@@ -141,7 +161,7 @@ const EditDemande = () => {
                 onChange={(event) => setEtat(event.target.value)}
                 id="etat"
                 required
-                label="Etat"
+
               />
             </MDBValidationItem>
           </div>
@@ -155,7 +175,8 @@ const EditDemande = () => {
                 required
                 className="form-control"
                 onChange={handleUserChange}
-                options={user.map((kam) => ({
+                value={user && { value: user, label: user.username }}
+                options={(Array.isArray(user) ? user : []).map((kam) => ({
                   value: kam.id,
                   label: kam.username,
                 }))}

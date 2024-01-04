@@ -71,7 +71,7 @@ export default function OffreList() {
 
   const fetchOffreList = () => {
     axios
-      .get("http://localhost:8092/api/demande/all")
+      .get("http://localhost:8092/api/demande/all",{ headers: authHeader()})
       .then((response) => {
         setOffres(response.data);
         setFilteredOffres(response.data);
@@ -121,12 +121,12 @@ export default function OffreList() {
   };
   const handleDelete = (id) => {
     if (
-      window.confirm("Are you sure you want to delete this requestForQuote?")
+      window.confirm("Are you sure you want to delete this Demande?")
     ) {
       axios
-        .delete("/api/demande/id", {
+        .delete("http://localhost:8092/api/demande/id", {
           data: { id: id },
-        })
+        },{ headers: authHeader()})
         .then(() => {
           setOffres(offres.filter((item) => item.id !== id));
           //setFilteredUsers(rfqs.filter((item) => item.id !== id));
@@ -140,10 +140,10 @@ export default function OffreList() {
           <MDBContainer fluid>
             <MDBBreadcrumb>
               <MDBBreadcrumbItem>
-                <a href="/Home">Home</a>
+                <a href="/">Home</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>
-                <a href="/RequestForQuote">Demande List</a>
+                <a href="/demandelist">Demande List</a>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem active>Data</MDBBreadcrumbItem>
             </MDBBreadcrumb>
@@ -252,14 +252,13 @@ export default function OffreList() {
                         />
                         <div className="ms-3">
                           <p className="fw-bold mb-1">
-                            {offre.utilisateur.email}
+
                           </p>
                         </div>
                       </div>
                     </td>
                     <td>
-                      <Link
-                        to={`/`}
+                      <Link to={`/DemandeDetails/${offre.id}`}
                         className="btn btn-info btn-rounded btn-sm"
                         style={{ marginRight: 2 }}
                       >
@@ -267,7 +266,7 @@ export default function OffreList() {
                       </Link>
 
                       <Link
-                        to={`/editDemande`}
+                        to={`/editDemande/${offre.id}`}
                         style={{ marginRight: 2 }}
                         className="btn btn-warning btn-rounded btn-sm"
                       >
