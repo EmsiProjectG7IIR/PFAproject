@@ -66,7 +66,7 @@ export default function UserList() {
 
         setFilteredUsers(filteredUsers);
     };
-
+  
 
     // Calculate the number of items per page
     const itemsPerPage = 5;

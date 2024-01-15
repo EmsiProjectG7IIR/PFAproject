@@ -1,6 +1,7 @@
 package com.bezkoder.springjwt.security.services;
 
 
+import com.bezkoder.springjwt.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class DemandeService  {
 			System.out.println("test : "+user);
 
 			demande.setUser(user);
+			demande.setStatus(Status.PENDING);
 			return demandeRepository.save(demande);
 		}
 	}
