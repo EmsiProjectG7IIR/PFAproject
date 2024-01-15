@@ -1,4 +1,3 @@
-com\bezkoder\springjwt\SpringBootSecurityJwtApplication.class
 com\bezkoder\springjwt\repository\RoleRepository.class
 com\bezkoder\springjwt\models\User.class
 com\bezkoder\springjwt\payload\response\MessageResponse.class
