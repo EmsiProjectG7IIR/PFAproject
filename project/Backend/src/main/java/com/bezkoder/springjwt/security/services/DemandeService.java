@@ -62,4 +62,8 @@ public class DemandeService  {
 		return demandeRepository.findAll();
 	}
 
+    public List<Demande> findByStatus(Status status) {
+		return	demandeRepository.findByStatus(status);
+
+    }
 }

@@ -16,6 +16,8 @@ import SignIn from "./Register/SignIn";
 import DemandeList from "./DemandeComponent/DemandeList";
 import AddDemande from "./DemandeComponent/AddDemande";
 import EditDemande from "./DemandeComponent/EditDemande";
+import DemandeTable from "./moderator/DemandeList";
+
 import {
   MDBCollapse,
   MDBContainer,
@@ -99,80 +101,51 @@ class App extends Component {
     const { showNavSecond } = this.state;
     return (
       <div>
-        <MDBNavbar expand='lg' light bgColor='#ffff'>
+        <MDBNavbar expand="lg" light bgColor="#ffff">
           <MDBContainer fluid className="removeDot">
-
-            <MDBNavbarBrand href='/Home'>Offre</MDBNavbarBrand>
+            <MDBNavbarBrand href="/Home">Offre</MDBNavbarBrand>
             <MDBNavbarToggler
-              type='button'
-              data-target='#navbarColor02'
-              aria-controls='navbarColor02'
-              aria-expanded='false'
-              aria-label='Toggle navigation'
+              type="button"
+              data-target="#navbarColor02"
+              aria-controls="navbarColor02"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
               onClick={this.toggleNavSecond}
             >
               <FontAwesomeIcon icon={faBars} />
             </MDBNavbarToggler>
             <MDBCollapse show={showNavSecond} navbar>
-              <MDBNavbarNav className='me-auto mb-2 mb-lg-0'>
-                <MDBNavbarItem className='active'>
-                  <MDBNavbarLink aria-current='page' href='/Home'>
-                    <MDBIcon icon='camera-retro' />
+              <MDBNavbarNav className="me-auto mb-2 mb-lg-0">
+                <MDBNavbarItem className="active">
+                  <MDBNavbarLink aria-current="page" href="/Home">
+                    <MDBIcon icon="camera-retro" />
                     Home
                   </MDBNavbarLink>
                 </MDBNavbarItem>
 
-
-
                 {showUserBoard && (
-
-
                   <MDBNavbarItem>
-                    <MDBNavbarLink href='/demandelist'>Demande List</MDBNavbarLink>
+                    <MDBNavbarLink href="/demandelist">
+                      Demande List
+                    </MDBNavbarLink>
                   </MDBNavbarItem>
-
-
                 )}
 
                 {showUserBoard && (
-
-
                   <MDBNavbarItem>
-                    <MDBNavbarLink href='/user'>User</MDBNavbarLink>
+                    <MDBNavbarLink href="/user">User</MDBNavbarLink>
                   </MDBNavbarItem>
-
-
                 )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                 {currentUser ? (
-                  <MDBNavbarItem className='ms-auto'>
+                  <MDBNavbarItem className="ms-auto">
                     <MDBDropdown>
                       <MDBDropdownToggle className="nav-link">
-                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          size="lg"
+                          style={{ color: "#ffffff" }}
+                        />
                       </MDBDropdownToggle>
                       <MDBDropdownMenu>
                         <Link to="/profile" className="dropdown-link">
@@ -189,44 +162,30 @@ class App extends Component {
                     </MDBDropdown>
                   </MDBNavbarItem>
                 ) : (
-                  <MDBNavbarItem className='ms-auto'>
-                    <MDBDropdown >
-                      <MDBDropdownToggle className="nav-link" >
-                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
+                  <MDBNavbarItem className="ms-auto">
+                    <MDBDropdown>
+                      <MDBDropdownToggle className="nav-link">
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          size="lg"
+                          style={{ color: "#ffffff" }}
+                        />
                       </MDBDropdownToggle>
                       <MDBDropdownMenu>
                         <Link to="/login" className="dropdown-link">
-                          <MDBDropdownItem link>
-                            Login
-                          </MDBDropdownItem>
+                          <MDBDropdownItem link>Login</MDBDropdownItem>
                         </Link>
                         <Link to="/register" className="dropdown-link">
-                          <MDBDropdownItem link>
-                            Register
-                          </MDBDropdownItem>
+                          <MDBDropdownItem link>Register</MDBDropdownItem>
                         </Link>
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </MDBNavbarItem>
                 )}
-
-
-
               </MDBNavbarNav>
-
-
-
-
-
             </MDBCollapse>
-
-
-
           </MDBContainer>
         </MDBNavbar>
-
-
-
 
         <div>
           <Routes>
@@ -236,20 +195,20 @@ class App extends Component {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<SignIn />} />
 
-
-
             <Route path="/NotFoundPage" element={<NotFoundPage />} />
 
-
-            <Route element={<ProtectedRoute />} >
-
-              <Route element={<UserRoute />} >
+            <Route element={<ProtectedRoute />}>
+              <Route element={<UserRoute />}>
                 <Route path="/user" element={<UserList />} />
                 <Route path="/AddUser" element={<AddUser />} />
                 <Route path="/demandelist" element={<DemandeList />} />
                 <Route path="/addDemande" element={<AddDemande />} />
                 <Route path="/editDemande/:id" element={<EditDemande />} />
-                <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
+                <Route
+                  path="/DemandeDetails/:id"
+                  element={<DemandeDetails />}
+                />
+                <Route path="/ModeratorDemande" element={<DemandeTable/>} />
               </Route>
             </Route>
           </Routes>
