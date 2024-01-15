@@ -173,7 +173,11 @@ export default function UserList() {
                                             </div>
                                         </td>
                                         <td>
-                                            <Link to={`/EditUser/${user.id}`} style={{ marginRight: 2 }} className="btn btn-warning btn-rounded btn-sm">
+                                            <Link
+                                                to={`/editUser/${user.id}`}
+                                                style={{ marginRight: 2 }}
+                                                className="btn btn-warning btn-rounded btn-sm"
+                                            >
                                                 <FontAwesomeIcon icon={faPen} />
                                             </Link>
                                             <MDBBtn color='danger' rounded size='sm' onClick={() => handleDelete(user.id)}>

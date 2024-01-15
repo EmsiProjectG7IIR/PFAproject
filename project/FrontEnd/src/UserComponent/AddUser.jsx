@@ -9,6 +9,7 @@ import {
 import DatePicker from 'react-datepicker';
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
+import authHeader from "../services/auth-header";
 
 
 
@@ -17,44 +18,22 @@ const AddUser = () => {
     const [password, setPassword] = useState([]);
     const [email, setEmail] = useState([]);
 
-    const [role, setRole] = useState('');
+    const [roles, setRoles] = useState([]);
     const navigate = useNavigate();
-
-
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        fetchUserList();
-    }, []);
-
-
-    const fetchUserList = () => {
-        axios
-            .post('/api/auth/signup')
-            .then((response) => {
-                setUsers(response.data);
-                navigate("/UserList");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
 
 
     const handleSubmit2 = (event) => {
         event.preventDefault();
 
-        const newUser = {
-            username: username,
-            password: password,
-            email: email,
-            role: [role],
-        };
-
         axios
-            .post('/api/auth/signup', newUser)
+            .post('http://localhost:8092/api/auth/signup',{
+                username: username,
+                password: password,
+                email: email,
+                roles: [roles],
+            }, { headers: authHeader() })
             .then((response) => {
-                navigate('/UserList');
+                navigate('/user');
             })
             .catch((error) => {
                 console.log(error);
@@ -62,10 +41,8 @@ const AddUser = () => {
     };
 
 
-
-
     const handleTypeChange = (selectedOption) => {
-        setRole(selectedOption.value);
+        setRoles(selectedOption.value);
     };
 
     return (
@@ -139,8 +116,7 @@ const AddUser = () => {
                                 onChange={handleTypeChange}
                                 options={[
                                     { value: "admin", label: 'Admin' },
-                                    { value: "user", label: 'User' },
-                                    { value: "mod", label: 'Moderator' }
+                                    { value: "user", label: 'User' }
                                 ]}
                             />
                         </MDBValidationItem>
