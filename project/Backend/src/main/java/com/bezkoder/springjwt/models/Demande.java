@@ -18,6 +18,7 @@ public class Demande {
 	private String description;
 	private String type;
 	private Date date;
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	@ManyToOne
 	User user;
