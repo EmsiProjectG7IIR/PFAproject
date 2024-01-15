@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -16,9 +18,14 @@ public class Demande {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String description;
-	private String type;
+
+
+	@ManyToOne
+    private Type type;
+
+
 	private Date date;
-	@Enumerated(EnumType.STRING)
+	@Enumerated(jakarta.persistence.EnumType.STRING)
 	private Status status;
 	@ManyToOne
 	User user;

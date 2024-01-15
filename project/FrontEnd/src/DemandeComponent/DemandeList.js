@@ -237,7 +237,7 @@ export default function OffreList() {
                     </td>
                     <td>
                       <div className="ms-3">
-                        <p className="text-muted mb-1">{offre.type}</p>
+                        <p className="text-muted mb-1">{offre.type.type}</p>
                       </div>
                     </td>
                     <td>

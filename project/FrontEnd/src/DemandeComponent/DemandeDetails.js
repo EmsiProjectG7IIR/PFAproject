@@ -131,7 +131,7 @@ const DemandeDetails = () => {
                         </label>
                         <MDBValidationItem feedback="" invalid>
                             <MDBInput
-                                value={type}
+                                value={type.type}
                                 name="type"
                                 onChange={(event) => setType(event.target.value)}
                                 id="type"

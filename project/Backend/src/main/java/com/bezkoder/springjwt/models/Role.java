@@ -9,7 +9,7 @@ public class Role {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(jakarta.persistence.EnumType.STRING)
   @Column(length = 20)
   private ERole name;
 
