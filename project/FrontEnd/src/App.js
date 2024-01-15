@@ -40,10 +40,9 @@ import DemandeDetails from "./DemandeComponent/DemandeDetails";
 import UserRoute from "./ProtectedRoute/UserRoute";
 import NotFoundPage from "./ProtectedRoute/NoFoundPage";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import EditUser from "./UserComponent/EditUser";
 
 class App extends Component {
-
-
 
   constructor(props) {
     super(props);
@@ -219,14 +218,8 @@ class App extends Component {
 
 
             </MDBCollapse>
-
-
-
           </MDBContainer>
         </MDBNavbar>
-
-
-
 
         <div>
           <Routes>
@@ -235,9 +228,6 @@ class App extends Component {
 
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<SignIn />} />
-
-
-
             <Route path="/NotFoundPage" element={<NotFoundPage />} />
 
 
@@ -246,6 +236,7 @@ class App extends Component {
               <Route element={<UserRoute />} >
                 <Route path="/user" element={<UserList />} />
                 <Route path="/AddUser" element={<AddUser />} />
+                <Route path="/editUser/:id" element={<EditUser />} />
                 <Route path="/demandelist" element={<DemandeList />} />
                 <Route path="/addDemande" element={<AddDemande />} />
                 <Route path="/editDemande/:id" element={<EditDemande />} />
