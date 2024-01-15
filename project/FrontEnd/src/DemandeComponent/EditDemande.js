@@ -20,6 +20,7 @@ import userService from "../services/user.service";
 const EditDemande = () => {
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
+  const [types, setTypes] = useState([]);
   const [dateCreation, setDateCreation] = useState(new Date());
   const [etat, setEtat] = useState("");
   const [user, setUser] = useState([]);
@@ -54,7 +55,25 @@ const EditDemande = () => {
     setInitialUser(rfqData.user);
     console.log("yy" + rfqData)
   };
-
+  useEffect(() => {
+    // Fetch the user from local storage or wherever it's stored
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    console.log(storedUser.id);
+    setUserId(storedUser.id)
+    console.log("wikwiiik" + userId);
+    console.log(user.id);
+  }, []);
+  useEffect(() => {
+    axios.get("http://localhost:8092/api/type/all", { headers: authHeader() })
+      .then((response) => {
+        setTypes(response.data);
+        console.log("hhhh" + types);
+      })
+      .catch((error) => {
+        console.error("Error fetching types:", error);
+      });
+  }, []);
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -64,11 +83,13 @@ const EditDemande = () => {
         {
           id: id,
           description: description,
-          type: type,
+          type: {
+            id: type.value
+          },
           date: dateCreation,
           status: etat,
           user: {
-            id: user.id,
+            id: userId,
           },
         }
 
@@ -121,13 +142,12 @@ const EditDemande = () => {
               Description
             </label>
             <MDBValidationItem feedback="" invalid>
-              <MDBInput
-                value={description}
-                name="description"
-                onChange={(event) => setDescription(event.target.value)}
+              <textarea
                 id="description"
-                required
-
+                className="form-control"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                rows="4" // You can adjust the number of rows as needed
               />
             </MDBValidationItem>
           </div>
@@ -137,7 +157,7 @@ const EditDemande = () => {
             </label>
             <MDBValidationItem feedback="" invalid>
               <MDBInput
-                value={type}
+                value={type.type}
                 name="type"
                 onChange={(event) => setType(event.target.value)}
                 id="type"
@@ -161,7 +181,7 @@ const EditDemande = () => {
             </MDBValidationItem>
           </div>
 
-          <div className="col-md-6">
+          {/**<div className="col-md-6">
             <label htmlFor="tech" className="form-label">
               Status
             </label>
@@ -175,10 +195,10 @@ const EditDemande = () => {
 
               />
             </MDBValidationItem>
-          </div>
+          </div> */}
 
 
-          <div className='col-md-6'>
+          {/*<div className='col-md-6'>
             <MDBValidationItem feedback='' invalid>
               <label htmlFor='select2' className='form-label'>
                 User
@@ -193,7 +213,7 @@ const EditDemande = () => {
 
               />
             </MDBValidationItem>
-          </div>
+          </div> */}
 
 
           <div className="col-12">

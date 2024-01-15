@@ -20,31 +20,55 @@ import authHeader from "../services/auth-header";
 
 const AddDemande = () => {
   const [description, setDescription] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState(null);
+  const [types, setTypes] = useState([]);
   const [dateCreation, setDateCreation] = useState(null);
-  const [etat, setEtat] = useState("");
+  const [status, setStatus] = useState("");
   const [user, setUser] = useState([]);
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
-
-
+  useEffect(() => {
+    // Fetch the user from local storage or wherever it's stored
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storedUser);
+    console.log(storedUser.id);
+    setUserId(storedUser.id)
+    console.log("wikwiiik" + userId);
+    console.log(user.id);
+  }, []);
+  useEffect(() => {
+    axios.get("http://localhost:8092/api/type/all", { headers: authHeader() })
+      .then((response) => {
+        setTypes(response.data);
+        console.log("hhhh" + types);
+      })
+      .catch((error) => {
+        console.error("Error fetching types:", error);
+      });
+  }, []);
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    axios.post("http://localhost:8092/api/demande/save", {
-      description: description,
-      type: type,
-      date: dateCreation,
-      status: etat,
-      user: {
-        id: userId,
-      },
-
-
-    }, { headers: authHeader() }).then((response) => {
-
-      navigate("/demandelist");
-    });
+    axios.get("http://localhost:8092/api/auth/users", { headers: authHeader() })
+      .then((response) => {
+        const user = response.data;
+        // Find the user with the logged-in user's ID
+        const loggedInUser = user.find(u => u.id === user.id);
+        console.log("Selected Type: ", type);
+        axios.post("http://localhost:8092/api/demande/save", {
+          description: description,
+          type: {
+            id: type.value
+          },
+          date: dateCreation,
+          user: {
+            id: userId,
+          },
+        }, { headers: authHeader() })
+          .then(() => {
+            navigate("/demandelist");
+          });
+      });
   };
   const handleUserChange = (selectedOption) => {
 
@@ -87,29 +111,30 @@ const AddDemande = () => {
               Description
             </label>
             <MDBValidationItem feedback="" invalid>
-              <MDBInput
-                value={description}
-                name="description"
-                onChange={(event) => setDescription(event.target.value)}
+              <textarea
                 id="description"
-                required
-
+                className="form-control"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                rows="4" // You can adjust the number of rows as needed
               />
             </MDBValidationItem>
           </div>
           <div className="col-md-6">
-            <label htmlFor="tech" className="form-label">
+            <label htmlFor="type" className="form-label">
               Type
             </label>
             <MDBValidationItem feedback="" invalid>
-              <MDBInput
+              <Select
+                options={types.map(t => ({ value: t.id, label: t.type }))}
                 value={type}
-                name="type"
-                onChange={(event) => setType(event.target.value)}
-                id="type"
-                required
-
+                onChange={(selectedOption) => setType(selectedOption)}
+                isSearchable
+                placeholder="Select Type"
               />
+
+
+
             </MDBValidationItem>
           </div>
           <div className='col-md-6'>
@@ -130,44 +155,16 @@ const AddDemande = () => {
           </div>
 
 
-          <div className="col-md-6">
-            <label htmlFor="tech" className="form-label">
-              Status
-            </label>
-            <MDBValidationItem feedback="" invalid>
-              <MDBInput
-                value={etat}
-                name="etat"
-                onChange={(event) => setEtat(event.target.value)}
-                id="etat"
-                required
 
-              />
-            </MDBValidationItem>
-          </div>
-          <div className="col-md-6">
-            <MDBValidationItem feedback="" invalid>
-              <label htmlFor="select3" className="form-label">
-                User
-              </label>
-              <Select
-                id="select3"
-                required
-                className="form-control"
-                onChange={handleUserChange}
-                options={user.map((u) => ({
-                  value: u.id,
-                  label: u.username,
-                }))}
-              />
-            </MDBValidationItem>
-          </div>
+
+
+
           <div className="col-12">
             <MDBBtn type="submit">Save</MDBBtn>
           </div>
         </MDBValidation>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
