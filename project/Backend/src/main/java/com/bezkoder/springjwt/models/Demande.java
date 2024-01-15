@@ -18,7 +18,7 @@ public class Demande {
 	private String description;
 	private String type;
 	private Date date;
-	private String status;
+	private Status status;
 	@ManyToOne
 	User user;
 	
