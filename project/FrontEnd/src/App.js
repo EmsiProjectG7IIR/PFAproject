@@ -1,21 +1,4 @@
-import logo from "./logo.svg";
-import "./App.css";
-import UserList from "./UserComponent/UserList";
-import {
-  faBars,
-  faCircle,
-  faCircleInfo,
-  faPen,
-  faTrash,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
-import { Link, Route, Routes } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Login from "./Register/Login";
-import SignIn from "./Register/SignIn";
-import DemandeList from "./DemandeComponent/DemandeList";
-import AddDemande from "./DemandeComponent/AddDemande";
-import EditDemande from "./DemandeComponent/EditDemande";
+import React, { useState, useEffect } from "react";
 import {
   MDBCollapse,
   MDBContainer,
@@ -30,224 +13,175 @@ import {
   MDBNavbarLink,
   MDBNavbarNav,
   MDBNavbarToggler,
-  MDBBtn,
 } from "mdb-react-ui-kit";
-import React, { Component, useState } from "react";
-import Sidebar from "./SideBar";
-import AddUser from "./UserComponent/AddUser";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import AuthService from "./services/auth.service";
-import DemandeDetails from "./DemandeComponent/DemandeDetails";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
 import UserRoute from "./ProtectedRoute/UserRoute";
 import NotFoundPage from "./ProtectedRoute/NoFoundPage";
-import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import Login from "./Register/Login";
+import SignIn from "./Register/SignIn";
+import UserList from "./UserComponent/UserList";
+import AddUser from "./UserComponent/AddUser";
 import EditUser from "./UserComponent/EditUser";
+import DemandeList from "./DemandeComponent/DemandeList";
+import AddDemande from "./DemandeComponent/AddDemande";
+import EditDemande from "./DemandeComponent/EditDemande";
+import DemandeDetails from "./DemandeComponent/DemandeDetails";
+import AppView from "./dashboard/view/app-view";
+import Profile from "./profie/Profile";
 
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showNavColor: false,
-      showSidebar: false
-    };
-    this.logOut = this.logOut.bind(this);
-
-    this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      showUserBoard: false,
-      currentUser: undefined,
-    };
-  }
-  handleToggleSidebar = () => {
-    this.setState((prevState) => ({
-      showSidebar: !prevState.showSidebar
-    }));
-  };
-  componentDidMount() {
+const App = () => {
+  const [showNavSecond, setShowNavSecond] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [showUserBoard, setShowUserBoard] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
     const user = AuthService.getCurrentUser();
-
     if (user) {
-      this.setState({
-        currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-        showUserBoard: user.roles.includes("ROLE_USER"),
-      });
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+      setShowUserBoard(user.roles.includes("ROLE_USER"));
     }
-  }
+  }, []);
 
-  logOut() {
+  const logOut = () => {
     AuthService.logout();
-    this.setState({
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      showUserBoard: false,
-      currentUser: undefined,
-    });
-  }
-  toggleNavSecond = () => {
-    this.setState(prevState => ({
-      showNavSecond: !prevState.showNavSecond
-    }));
+    setShowModeratorBoard(false);
+    setShowAdminBoard(false);
+    setShowUserBoard(false);
+    setCurrentUser(undefined);
   };
 
-  render() {
+  const toggleNavSecond = () => {
+    setShowNavSecond((prev) => !prev);
+  };
 
-    const { currentUser, showModeratorBoard, showAdminBoard, showUserBoard } = this.state;
-    const { showNavSecond } = this.state;
-    return (
-      <div>
-        <MDBNavbar expand='lg' light bgColor='#ffff'>
-          <MDBContainer fluid className="removeDot">
+  return (
+    <div>
+      <MDBNavbar expand="lg" light bgColor="#ffff">
+        <MDBContainer fluid className="removeDot">
+          <MDBNavbarBrand href="/Home">Offre</MDBNavbarBrand>
+          <MDBNavbarToggler
+            type="button"
+            data-target="#navbarColor02"
+            aria-controls="navbarColor02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            onClick={toggleNavSecond}
+          >
+            <FontAwesomeIcon icon={faBars} />
+          </MDBNavbarToggler>
+          <MDBCollapse show={showNavSecond} navbar>
+            <MDBNavbarNav className="me-auto mb-2 mb-lg-0">
+              <MDBNavbarItem className="active">
+                <MDBNavbarLink aria-current="page" href="/Home">
+                  <MDBIcon icon="camera-retro" />
+                  Home
+                </MDBNavbarLink>
+              </MDBNavbarItem>
 
-            <MDBNavbarBrand href='/Home'>Offre</MDBNavbarBrand>
-            <MDBNavbarToggler
-              type='button'
-              data-target='#navbarColor02'
-              aria-controls='navbarColor02'
-              aria-expanded='false'
-              aria-label='Toggle navigation'
-              onClick={this.toggleNavSecond}
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </MDBNavbarToggler>
-            <MDBCollapse show={showNavSecond} navbar>
-              <MDBNavbarNav className='me-auto mb-2 mb-lg-0'>
-                <MDBNavbarItem className='active'>
-                  <MDBNavbarLink aria-current='page' href='/Home'>
-                    <MDBIcon icon='camera-retro' />
-                    Home
+              {showUserBoard && (
+                <MDBNavbarItem>
+                  <MDBNavbarLink href="/demandelist">
+                    Demande List
                   </MDBNavbarLink>
                 </MDBNavbarItem>
+              )}
 
+              {showUserBoard && (
+                <MDBNavbarItem>
+                  <MDBNavbarLink href="/user">User</MDBNavbarLink>
+                </MDBNavbarItem>
+              )}
 
+              {currentUser ? (
+                <MDBNavbarItem className="ms-auto">
+                  <MDBDropdown>
+                    <MDBDropdownToggle className="nav-link">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        size="lg"
+                        style={{ color: "#ffffff" }}
+                      />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu>
+                      <Link to="/profile" className="dropdown-link">
+                        <MDBDropdownItem
+                          link
+                          onClick={() => navigate("/profile")}
+                        >
+                          {currentUser.username}
+                        </MDBDropdownItem>
+                      </Link>
+                      <Link to="/login" className="dropdown-link">
+                        <MDBDropdownItem link onClick={logOut}>
+                          Log out
+                        </MDBDropdownItem>
+                      </Link>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavbarItem>
+              ) : (
+                <MDBNavbarItem className="ms-auto">
+                  <MDBDropdown>
+                    <MDBDropdownToggle className="nav-link">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        size="lg"
+                        style={{ color: "#ffffff" }}
+                      />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu>
+                      <Link to="/login" className="dropdown-link">
+                        <MDBDropdownItem link>Login</MDBDropdownItem>
+                      </Link>
+                      <Link to="/register" className="dropdown-link">
+                        <MDBDropdownItem link>Register</MDBDropdownItem>
+                      </Link>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavbarItem>
+              )}
+            </MDBNavbarNav>
+          </MDBCollapse>
+        </MDBContainer>
+      </MDBNavbar>
 
-                {showUserBoard && (
+      <div>
+        <Routes>
+          <Route
+            path="/"
+            element={currentUser != undefined ? <AppView /> : <Login />}
+          />
+          <Route path="/profile" element={<Profile />} />
 
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard/*" element={<AppView />} />
 
-                  <MDBNavbarItem>
-                    <MDBNavbarLink href='/demandelist'>Demande List</MDBNavbarLink>
-                  </MDBNavbarItem>
+          <Route path="/register" element={<SignIn />} />
+          <Route path="/NotFoundPage" element={<NotFoundPage />} />
 
-
-                )}
-
-                {showUserBoard && (
-
-
-                  <MDBNavbarItem>
-                    <MDBNavbarLink href='/user'>User</MDBNavbarLink>
-                  </MDBNavbarItem>
-
-
-                )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {currentUser ? (
-                  <MDBNavbarItem className='ms-auto'>
-                    <MDBDropdown>
-                      <MDBDropdownToggle className="nav-link">
-                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
-                      </MDBDropdownToggle>
-                      <MDBDropdownMenu>
-                        <Link to="/profile" className="dropdown-link">
-                          <MDBDropdownItem link>
-                            {currentUser.username}
-                          </MDBDropdownItem>
-                        </Link>
-                        <Link to="/login" className="dropdown-link">
-                          <MDBDropdownItem link onClick={this.logOut}>
-                            Log out
-                          </MDBDropdownItem>
-                        </Link>
-                      </MDBDropdownMenu>
-                    </MDBDropdown>
-                  </MDBNavbarItem>
-                ) : (
-                  <MDBNavbarItem className='ms-auto'>
-                    <MDBDropdown >
-                      <MDBDropdownToggle className="nav-link" >
-                        <FontAwesomeIcon icon={faUser} size="lg" style={{ color: "#ffffff" }} />
-                      </MDBDropdownToggle>
-                      <MDBDropdownMenu>
-                        <Link to="/login" className="dropdown-link">
-                          <MDBDropdownItem link>
-                            Login
-                          </MDBDropdownItem>
-                        </Link>
-                        <Link to="/register" className="dropdown-link">
-                          <MDBDropdownItem link>
-                            Register
-                          </MDBDropdownItem>
-                        </Link>
-                      </MDBDropdownMenu>
-                    </MDBDropdown>
-                  </MDBNavbarItem>
-                )}
-
-
-
-              </MDBNavbarNav>
-
-
-
-
-
-            </MDBCollapse>
-          </MDBContainer>
-        </MDBNavbar>
-
-        <div>
-          <Routes>
-            {/* Add the following lines for SignIn and SignUp routes */}
-            <Route path="/" element={<Login />} />
-
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<SignIn />} />
-            <Route path="/NotFoundPage" element={<NotFoundPage />} />
-
-
-            <Route element={<ProtectedRoute />} >
-
-              <Route element={<UserRoute />} >
-                <Route path="/user" element={<UserList />} />
-                <Route path="/AddUser" element={<AddUser />} />
-                <Route path="/editUser/:id" element={<EditUser />} />
-                <Route path="/demandelist" element={<DemandeList />} />
-                <Route path="/addDemande" element={<AddDemande />} />
-                <Route path="/editDemande/:id" element={<EditDemande />} />
-                <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
-              </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<UserRoute />}>
+              <Route path="/user" element={<UserList />} />
+              <Route path="/AddUser" element={<AddUser />} />
+              <Route path="/editUser/:id" element={<EditUser />} />
+              <Route path="/demandelist" element={<DemandeList />} />
+              <Route path="/addDemande" element={<AddDemande />} />
+              <Route path="/editDemande/:id" element={<EditDemande />} />
+              <Route path="/DemandeDetails/:id" element={<DemandeDetails />} />
             </Route>
-          </Routes>
-        </div>
+          </Route>
+        </Routes>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
